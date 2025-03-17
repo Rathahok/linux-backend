@@ -1,0 +1,31 @@
+/*tbProduct*/
+
+USE linux-project;
+
+CREATE TABLE tbProduct (
+    pId INT AUTO_INCREMENT PRIMARY KEY,
+    Pname VARCHAR(255) NOT NULL,
+    unitPrice DECIMAL(10,2) NOT NULL,
+    stockQty INT NOT NULL,
+    TotalExport INT DEFAULT 0,
+    img VARCHAR(255) 
+);
+
+
+/*tbExport*/
+
+CREATE TABLE tbExport (
+    exId INT AUTO_INCREMENT PRIMARY KEY,
+    exTotalQty INT NOT NULL,
+    exDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+/*exportProductDetail*/
+CREATE TABLE exportProductDetail (
+    pId INT,
+    exId INT,
+    exportQty INT NOT NULL,
+    PRIMARY KEY (pId, exId),
+    FOREIGN KEY (pId) REFERENCES tbProduct(pId) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (exId) REFERENCES tbExport(exId) ON DELETE CASCADE ON UPDATE CASCADE
+);

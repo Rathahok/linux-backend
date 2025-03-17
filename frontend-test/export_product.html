@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Product</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<h2>Export Product</h2>
+<form id="exportProductForm">
+    <label>Select Product:</label>
+    <select id="productSelect" name="pId" required></select>
+
+    <label>Export Quantity:</label>
+    <input type="number" name="exportQty" required>
+
+    <button type="submit">Export</button>
+</form>
+
+<script src="script.js"></script>
+<script>
+    populateProductDropdown();
+    document.getElementById("exportProductForm").addEventListener("submit", exportProduct);
+</script>
+
+</body>
+</html>
