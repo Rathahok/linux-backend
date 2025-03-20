@@ -20,6 +20,48 @@ function fetchProducts() {
     });
 }
 
+// function fetchExport() {
+//     fetch(API_BASE + "get_export.php")
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log(data); // Debugging: Check response in console
+//             displayExportData(data);
+//         })
+//         .catch(error => console.error("Error fetching export data:", error));
+// }
+
+// function displayExportData(data) {
+//     const exportContainer = document.getElementById("exportContainer");
+//     exportContainer.innerHTML = ""; // Clear previous data
+
+//     data.forEach(exportRecord => {
+//         let exportDiv = document.createElement("div");
+//         exportDiv.classList.add("export-record");
+//         exportDiv.style.cssText = "border: 1px solid gray; padding: 15px; margin-bottom: 10px;";
+
+//         let exportDetails = `
+//             <h3>Export ID: ${exportRecord.exId}</h3>
+//             <h4>Products:</h4>
+//             <ul>
+//         `;
+
+//         exportRecord.products.forEach(product => {
+//             exportDetails += `
+//                 <li>
+//                     <strong>${product.Pname}</strong> - 
+//                     Exported Quantity: ${product.exportQty}
+//                 </li>
+//             `;
+//         });
+
+//         exportDetails += "</ul>";
+//         exportDiv.innerHTML = exportDetails;
+//         exportContainer.appendChild(exportDiv);
+//     });
+// }
+
+
+
 // Add new product
 function addProduct(event) {
     event.preventDefault();

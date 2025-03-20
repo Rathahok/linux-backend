@@ -1,6 +1,6 @@
 /*tbProduct*/
 
-USE linux-project;
+USE `linux-project`;
 
 CREATE TABLE tbProduct (
     pId INT AUTO_INCREMENT PRIMARY KEY,
@@ -12,15 +12,13 @@ CREATE TABLE tbProduct (
 );
 
 
-/*tbExport*/
-
 CREATE TABLE tbExport (
     exId INT AUTO_INCREMENT PRIMARY KEY,
     exTotalQty INT NOT NULL,
     exDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-/*exportProductDetail*/
+
 CREATE TABLE exportProductDetail (
     pId INT,
     exId INT,

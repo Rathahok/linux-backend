@@ -6,23 +6,116 @@
     <title>Export Product</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
+<style>
+.product-card{
+    width: 200px;
+   border: 1px solid blue;
+   background-color: rgb(163, 230, 230);
+
+}
+.product-card:hover{
+    background-color: rgb(74, 132, 132);
+}
+</style>
+
+
+
+
 <body>
+<div id="container-export" style="border: 1px solid red;">
 
-<h2>Export Product</h2>
-<form id="exportProductForm">
-    <label>Select Product:</label>
-    <select id="productSelect" name="pId" required></select>
+    <!-- <div class="product-card" style="border:1px gray solid" >
+        <img src="../UploadImg/serum.jpg" alt="" style="width: 100px; height: 100px;">
+        <h4>centella serum</h4>
+        <p>Unit Price: $20</p>
+        <p>Stock Quantity: 100</p>
+    </div>
+    <div class="product-card" style="border:1px gray solid" >
+        <img src="../UploadImg/serum.jpg" alt="" style="width: 100px; height: 100px;">
+        <h4>centella serum</h4>
+        <p>Unit Price: $20</p>
+        <p>Stock Quantity: 100</p>
+    </div> -->
+</div>
 
-    <label>Export Quantity:</label>
-    <input type="number" name="exportQty" required>
-
-    <button type="submit">Export</button>
+<form id="exportForm" method="POST" style="border:none">
+    <div class="export-list" style="width: 700px;margin-top: 70px; border: 1px solid gray; padding: 20px;display: block;"></div>
+    <button type="submit">submit Export</button>
 </form>
+
 
 <script src="script.js"></script>
 <script>
-    populateProductDropdown();
-    document.getElementById("exportProductForm").addEventListener("submit", exportProduct);
+
+function addToExportList(product) {
+    let exportList = document.querySelector(".export-list");
+
+    // Check if product already exists in the export list
+    let existingProduct = [...exportList.querySelectorAll(".product-list")].find(item =>
+        item.querySelector("h4").innerText === product.Pname
+    );
+
+    if (existingProduct) {
+        // If product exists, focus on input and increment quantity
+        let qtyInput = existingProduct.querySelector("input[name='exportQty']");
+        let newQty = parseInt(qtyInput.value) + 1;
+        if(newQty<= product.stockQty){
+            qtyInput.value = newQty;
+        }else{
+            alert("You can't export more than stock quantity");
+        }
+            qtyInput.focus();
+    } 
+    else {
+        // Create new product item
+        let productItem = document.createElement("div");
+        productItem.classList.add("product-list");
+        productItem.style.cssText = "width: 500px;border: 1px solid gray; display: flex; gap: 20px; align-items: center; padding: 10px;";
+
+        productItem.innerHTML = `
+        <input type="hidden" name="pId[]" value="${product.pId}">
+            <img src="${product.img}" alt="" style="width: 60px">
+            <h4>${product.Pname}</h4>
+            <p>Unit Price: $${product.unitPrice}</p>
+            <label for="exportQty">ExportQty</label>
+            <input type="number" name="exportQty[]" value="1" min="1" max="${product.stockQty}" required style="width: 100px">
+             <button class="remove-btn" style="background: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">Remove</button>
+        `;
+        productItem.querySelector(".remove-btn").addEventListener("click", function () {
+            productItem.remove();
+        });
+        exportList.appendChild(productItem);
+    }
+  
+}
+    
+    //this function has been used only in id container-export
+    const ContainerEport = document.getElementById('container-export');
+    function GetProductCard() {
+        fetch('http://localhost/Linux_backend/api/get_product.php')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.classList.add('product-card');
+                    productCard.innerHTML = `
+                    <img src="${product.img}" alt="" style="width: 100px; height: 100px;">
+                     <h4>${product.Pname}</h4>
+                     <p>Unit Price: $${product.unitPrice}</p>
+                      <p>Stock Quantity: ${product.stockQty}</p>
+                    `;
+                    productCard.addEventListener("click", function () {
+                    addToExportList(product);
+                });
+                    ContainerEport.appendChild(productCard);
+                });
+            });
+    }
+
+
+  GetProductCard();
+    document.getElementById('exportForm').addEventListener("submit", exportProduct);
 </script>
 
 </body>
